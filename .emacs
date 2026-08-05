@@ -201,6 +201,21 @@
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
+;;;;;;;;;;;; IMenu ;;;;;;;;;;
+(global-set-key (kbd "M-o") #'imenu)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;; GIT ;;;;;;;;;;;;;;;;;;;;;;
+(use-package diff-hl
+  :ensure t
+  :hook ((prog-mode . diff-hl-mode)
+         (dired-mode . diff-hl-dired-mode))
+  :config
+  (global-diff-hl-mode 1)
+  ;; live updates as you type, not just on save
+  (diff-hl-flydiff-mode 1))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;; TYPESCRIPT
 (setq lsp-javascript-typescript-server-command '("typescript-language-server" "--stdio"))
 (add-hook 'js-mode-hook #'lsp)
@@ -214,7 +229,16 @@
          (tsx-mode . prettier-mode)))
 (add-hook 'before-save-hook 'lsp-format-buffer) ;; Format using LSP before saving
 (add-hook 'before-save-hook 'lsp-organize-imports) ;; Organize imports before saving
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;; eglot ;;;;;;;;;;;;;;;
+;; hook eglot to typescript-mode
+(add-hook 'typescript-mode-hook #'eglot-ensure)
+
+;;;; for code actions
+(with-eval-after-load 'eglot
+(define-key eglot-mode-map (kbd "M-RET") #'eglot-code-actions))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;; GOLANG
 (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/go/bin")))
