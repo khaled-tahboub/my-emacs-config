@@ -9,6 +9,7 @@
 
 ;;;; NO BACK UP FILES
 (setq make-backup-files nil)
+(setq auto-save-default nil)
 
 ;;;;;;;;;;;;;;;;;;;; FORCE FULL SCREEN
 ;; Define a function to toggle fullscreen mode
